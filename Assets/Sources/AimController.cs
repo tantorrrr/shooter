@@ -14,6 +14,7 @@ public class AimController : MonoBehaviour
     // Start is called before the first frame update
     Vector3 direction;
 
+    public PlayerController PlayerControler;
 
 
     void Start()
@@ -24,8 +25,18 @@ public class AimController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        direction = Vector3.right * _joystick.Horizontal + Vector3.up * _joystick.Vertical;
+        //direction = Vector3.right * _joystick.Horizontal + Vector3.up * _joystick.Vertical;
 
-        _crossHair.transform.localPosition += direction * Offset/* * Time.deltaTime*/;
+        //_crossHair.transform.localPosition += direction * Offset/* * Time.deltaTime*/;
+
+        direction = -1f*Vector3.right * _joystick.Vertical + Vector3.up * _joystick.Horizontal;
+        PlayerControler.transform.localEulerAngles += direction * Offset/* * Time.deltaTime*/;
+
     }
+
+    public void Fire()
+    {
+        PlayerControler.Fire();
+    }
+
 }
