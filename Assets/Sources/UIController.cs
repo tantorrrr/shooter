@@ -1,42 +1,44 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AimController : MonoBehaviour
+public class UIController : MonoBehaviour
 {
-
     public float Offset = 3;
 
     [SerializeField] private FloatingJoystick _joystick;
     [SerializeField] Image _crossHair;
 
     // Start is called before the first frame update
-    Vector3 direction;
+    private Vector3 direction;
 
     public PlayerController PlayerControler;
 
 
-    void Start()
-    {
-        
-    }
+    public Action ShootBtnPressHandler;
+    public Action ShootBtnReleaseHandler;
 
-    // Update is called once per frame
+    public Action ReloadBtnClickHandler;
+
     void Update()
     {
-        //direction = Vector3.right * _joystick.Horizontal + Vector3.up * _joystick.Vertical;
-
-        //_crossHair.transform.localPosition += direction * Offset/* * Time.deltaTime*/;
-
         direction = -1f*Vector3.right * _joystick.Vertical + Vector3.up * _joystick.Horizontal;
         PlayerControler.transform.localEulerAngles += direction * Offset/* * Time.deltaTime*/;
-
     }
 
-    public void Fire()
+    public void OnPressShoot()
     {
-        PlayerControler.Fire();
+        ShootBtnPressHandler?.Invoke();
+    }
+    
+
+    public void OnReleaseShoot()
+    {
+        ShootBtnReleaseHandler?.Invoke();
     }
 
+    public void OnClickReload()
+    {
+        ReloadBtnClickHandler?.Invoke();
+    }
 }
