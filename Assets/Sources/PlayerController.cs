@@ -6,16 +6,39 @@ public class PlayerController : MonoBehaviour
     private int MAX_HP = 100;
 
     private int _currentHp;
-    public Animator ArmAnimController;
+    public GunController Gun;
 
+    public Animator ArmAnimController;
     public Action PlayerDeadHandler;
 
-    public void Shoot()
+    public void Init()
+    {
+        Gun.ShootStartHandler += OnGunShootStart;
+        Gun.AutoReloadHandler += OnReload;
+    }
+
+    private void OnGunShootStart()
+    {
+        DoShoot();
+    }
+
+    private void OnReload()
+    {
+        Reload();
+    }
+
+    public void Reload()
+    {
+        Gun.DoReload();
+        DoReload();
+    }
+
+    private void DoShoot()
     {
         ArmAnimController.SetTrigger("shoot");
     }
 
-    public void Reload()
+    public void DoReload()
     {
         ArmAnimController.SetTrigger("reload");
     }

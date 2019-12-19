@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -25,6 +24,12 @@ public class EnemyController : MonoBehaviour
     private int _currentHp;
 
     public int Damage { get; private set; } = ENEMY_DAMAGE;
+
+    private void Awake()
+    {
+        Head.GotHitHandler += OnGotHit;
+        Body.GotHitHandler += OnGotHit;
+    }
 
     public void Init()
     {
@@ -52,7 +57,7 @@ public class EnemyController : MonoBehaviour
         _currentState = ENEMY_STATE.WALK;
     }
 
-    private void MoveToTarget()
+    private void DoMoveToTarget()
     {
         if(_currentState == ENEMY_STATE.WALK && _target != null)
         {
@@ -90,14 +95,8 @@ public class EnemyController : MonoBehaviour
     {
         if (_target == null) return;
 
-        MoveToTarget();
+        DoMoveToTarget();
         DoAttack();
-    }
-
-    private void Awake()
-    {
-        Head.GotHitHandler += OnGotHit;
-        Body.GotHitHandler += OnGotHit;
     }
 
     private void OnGotHit(BodyPart part)
@@ -138,14 +137,12 @@ public class EnemyController : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
 
-        //EnemyDeadHandler?.Invoke();
         SimplePool.Despawn(gameObject);
     }
 
-
     private float GetDamageReceive(BodyPart part)
     {
-        return part.Rate * GameManager.Instance.Gun.GunDamage;
+        return part.Rate * GameManager.Instance.Player.Gun.GunDamage;
     }
 
     private void Reset()

@@ -47,7 +47,7 @@ public class GunController : MonoBehaviour
         _continuousShoot = true;
     }
 
-    public void Shoot()
+    public void DoShoot()
     {
         if(_currentGunState == GUN_STATE.RELOAD)
         {
@@ -70,7 +70,7 @@ public class GunController : MonoBehaviour
         InitBullet();
     }
 
-    public void Reload()
+    public void DoReload()
     {
         if (_currentGunState == GUN_STATE.RELOAD) return;
         _gunAnimController.SetTrigger("reload");
@@ -102,7 +102,7 @@ public class GunController : MonoBehaviour
         {
             if(_delayCount > _delayShoot)
             {
-                Shoot();
+                DoShoot();
                 _delayCount = 0;
             }
             _delayCount += Time.fixedDeltaTime;

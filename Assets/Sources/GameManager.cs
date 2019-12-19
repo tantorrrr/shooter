@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
 
     public LevelManager LevelManager;
     public UIController UIController;
-    public GunController Gun;
     public PlayerController Player;
     public EnemyManager EnemyManager;
 
@@ -29,20 +28,18 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        UIController.ShootBtnPressHandler += OnShootBtnPress;
-        UIController.ShootBtnReleaseHandler += OnShootBtnRelease;
-        UIController.ReloadBtnClickHandler += OnClickReload;
-
-        Gun.ShootStartHandler += OnGunShootStart;
-        Gun.ShootEndHandler += OnGunShootEnd;
-        Gun.AutoReloadHandler += OnReload;
-        Gun.ReloadDoneHandler += OnReloadDone;
-
+        Player.Init();
+        Player.Gun.ShootStartHandler += OnGunShootStart;
+        Player.Gun.ReloadDoneHandler += OnReloadDone;
         Player.PlayerDeadHandler += OnPlayerDead;
 
         EnemyManager.Init(Player);
         EnemyManager.EnemyDeadHandler += OnEnemyDead;
         EnemyManager.AllEnemyDeadHandler += OnAllEnemyDead;
+
+        UIController.ShootBtnPressHandler += OnShootBtnPress;
+        UIController.ShootBtnReleaseHandler += OnShootBtnRelease;
+        UIController.ReloadBtnClickHandler += OnClickReload;
 
         StartInitLevel();
     }
@@ -52,14 +49,14 @@ public class GameManager : MonoBehaviour
         UIController.HideEndGame();
         UIController.ShowLevel(LevelManager.CurrentLevel);
         UpdateEnemyStat();
-        UIController.ShowGunStat(Gun.GunCurrentAmmo, Gun.GunMaxAmmo);
+        UIController.ShowGunStat(Player.Gun.GunCurrentAmmo, Player.Gun.GunMaxAmmo);
 
         EnemyManager.StartNextLevel(LevelManager.InitEnemyNumber, LevelManager.TotalEnemyNumber);
     }
 
     private void OnClickReload()
     {
-        OnReload();
+        Player.Reload();
     }
 
     private void OnShootBtnRelease()
@@ -70,11 +67,6 @@ public class GameManager : MonoBehaviour
     private void OnShootBtnPress()
     {
         HandleShot();
-    }
-
-    private void OnGunShootEnd()
-    {
-
     }
 
     private void OnPlayerDead()
@@ -146,7 +138,7 @@ public class GameManager : MonoBehaviour
         {
             //Fire();
 
-            OnReload();
+            Player.Reload();
         }
 #endif
         CheckSlow(Time.deltaTime);
@@ -154,28 +146,21 @@ public class GameManager : MonoBehaviour
 
     private void OnGunShootStart()
     {
-        Player.Shoot();
-
-        UIController.ShowGunStat(Gun.GunCurrentAmmo, Gun.GunMaxAmmo);
+        UIController.ShowGunStat(Player.Gun.GunCurrentAmmo, Player.Gun.GunMaxAmmo);
     }
 
     private void HandleShot()
     {
-        Gun.Shoot();
+        Player.Gun.DoShoot();
     }
     private void HandleReleaseShoot()
     {
-        Gun.ShootEnd();
-    }
-    private void OnReload()
-    {
-        Gun.Reload();
-        Player.Reload();
+        Player.Gun.ShootEnd();
     }
 
     private void OnReloadDone()
     {
-        UIController.ShowGunStat(Gun.GunCurrentAmmo, Gun.GunMaxAmmo);
+        UIController.ShowGunStat(Player.Gun.GunCurrentAmmo, Player.Gun.GunMaxAmmo);
     }
 
     float _minSlowTimeScale = 0.3f;
