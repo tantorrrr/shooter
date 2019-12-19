@@ -34,7 +34,12 @@ public class GameManager : MonoBehaviour
         Gun.ShootStartHandler += OnGunShootStart;
         Gun.ShootEndHandler += OnGunShootEnd;
 
+        Player.PlayerDeadHandler += OnPlayerDead;
+
         EnemyManager.SetPlayer(Player);
+
+
+        UIController.HideEndGame();
     }
 
     private void OnClickReload()
@@ -57,6 +62,11 @@ public class GameManager : MonoBehaviour
 
     }
 
+    private void OnPlayerDead()
+    {
+        UIController.ShowEndgme(false);
+    }
+
     private void OnGunShootStart()
     {
         Player.Shoot();
@@ -76,6 +86,13 @@ public class GameManager : MonoBehaviour
     {
         Gun.Reload();
         Player.Reload();
+    }
+
+    public void RestartGame()
+    {
+        Debug.Log("Restart game");
+        UIController.HideEndGame();
+        Player.Reset();
     }
 
     // Update is called once per frame

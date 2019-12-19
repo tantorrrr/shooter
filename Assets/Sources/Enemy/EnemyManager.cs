@@ -48,10 +48,18 @@ public class EnemyManager : MonoBehaviour
         Vector3 rndPosWithin;
         rndPosWithin = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
         rndPosWithin = spawnArea.transform.TransformPoint(rndPosWithin * .5f);
+        rndPosWithin = new Vector3(rndPosWithin.x, 0, rndPosWithin.z);
+
         var enemy = SimplePool.Spawn(Enemy.gameObject, rndPosWithin, transform.rotation);
 
         enemy.GetComponent<EnemyController>().Init();
+        enemy.GetComponent<EnemyController>().AttackHandler = EnemyAttackAct;
         enemy.GetComponent<EnemyController>().SetTarget(_player.transform);
+    }
+
+    void EnemyAttackAct(int damage)
+    {
+        _player.BeAttacked(damage);
     }
 
     GameObject GetArea()

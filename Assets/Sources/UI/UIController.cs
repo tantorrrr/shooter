@@ -7,7 +7,8 @@ public class UIController : MonoBehaviour
     public float Offset = 3;
 
     [SerializeField] private FloatingJoystick _joystick;
-    [SerializeField] Image _crossHair;
+    [SerializeField] private Image _crossHair;
+    [SerializeField] private EndGame _endGame;
 
     // Start is called before the first frame update
     private Vector3 direction;
@@ -22,7 +23,7 @@ public class UIController : MonoBehaviour
 
     void Update()
     {
-        direction = -1f*Vector3.right * _joystick.Vertical + Vector3.up * _joystick.Horizontal;
+        direction = -1f * Vector3.right * _joystick.Vertical + Vector3.up * _joystick.Horizontal;
         PlayerControler.transform.localEulerAngles += direction * Offset/* * Time.deltaTime*/;
     }
 
@@ -30,7 +31,7 @@ public class UIController : MonoBehaviour
     {
         ShootBtnPressHandler?.Invoke();
     }
-    
+
 
     public void OnReleaseShoot()
     {
@@ -40,5 +41,16 @@ public class UIController : MonoBehaviour
     public void OnClickReload()
     {
         ReloadBtnClickHandler?.Invoke();
+    }
+
+    public void ShowEndgme(bool isWin)
+    {
+        _endGame.gameObject.SetActive(true);
+        _endGame.SetEndGame(isWin);
+    }
+
+    public void HideEndGame()
+    {
+        _endGame.gameObject.SetActive(false);
     }
 }

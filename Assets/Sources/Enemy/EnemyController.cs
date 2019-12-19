@@ -5,18 +5,25 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    private const int ENEMY_DAMAGE = 90;
     private int MAX_HP = 100;
+    private int ATTACK_DISTANCE = 2;
+    private float ATTACK_INTERVAL_TIME = 4f;
 
     public float WalkSpeed = 20;
 
     public Animator Anim;
-
     public HeadPart Head;
     public NormalPart Body;
+    public EnemyAnimEvent Event;
+
+    public Action<int> AttackHandler;
 
     private ENEMY_STATE _currentState;
     private Transform _target;
     private int _currentHp;
+
+    public int Damage { get; private set; } = ENEMY_DAMAGE;
 
     public void Init()
     {
@@ -24,6 +31,13 @@ public class EnemyController : MonoBehaviour
         _currentHp = MAX_HP;
         Anim.Play("idle");
         _currentState = ENEMY_STATE.WALK;
+
+        Event.AttackHandler += OnAttack;
+    }
+
+    private void OnAttack()
+    {
+        AttackHandler?.Invoke(Damage);
     }
 
     public void SetTarget(Transform target)
@@ -47,9 +61,36 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    float _countAttInterval = 0;
+    private void DoAttack()
+    {
+        if(_currentState == ENEMY_STATE.WALK)
+        {
+            if(Vector3.Distance(transform.position, _target.position) <= ATTACK_DISTANCE)
+            {
+                Anim.SetTrigger("attack");
+                _currentState = ENEMY_STATE.ATTACK;
+            }
+        }
+
+        if(_currentState == ENEMY_STATE.ATTACK)
+        {
+            _countAttInterval += Time.deltaTime;
+
+            if(_countAttInterval >= ATTACK_INTERVAL_TIME)
+            {
+                Anim.SetTrigger("attack");
+                _countAttInterval = 0;
+            }
+        }
+    }
+
     private void Update()
     {
-        MoveToTarget();   
+        if (_target == null) return;
+
+        MoveToTarget();
+        DoAttack();
     }
 
     private void Awake()
@@ -92,6 +133,7 @@ public class EnemyController : MonoBehaviour
 
     private void Dispose()
     {
+        Event.AttackHandler -= OnAttack;
         StartCoroutine(IEDespawn());
     }
 
@@ -106,6 +148,18 @@ public class EnemyController : MonoBehaviour
     {
         return part.Rate * GameManager.Instance.Gun.GunDamage;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("trigger" + other.name);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("colli sion");
+
+    }
+
 
     enum ENEMY_STATE
     {
