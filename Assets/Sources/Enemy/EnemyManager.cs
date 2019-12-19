@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
+    private const int SPAWN_INTERVAL = 4;
+
     public List<GameObject> SpawnAreas;
     public EnemyController Enemy;
 
@@ -40,8 +42,8 @@ public class EnemyManager : MonoBehaviour
         RandomSpawn();
     }
 
-    float spawnRandomCounter = 0;
-    float spawnRandomOffset = 5;
+    float _spawnRandomCounter = 0;
+    float _spawnRandomOffset = SPAWN_INTERVAL;
     private void RandomSpawn()
     {
         if (!_startLevel) return;
@@ -51,11 +53,11 @@ public class EnemyManager : MonoBehaviour
             return;
         }
 
-        spawnRandomCounter += Time.deltaTime;
-        if (spawnRandomCounter > spawnRandomOffset)
+        _spawnRandomCounter += Time.deltaTime;
+        if (_spawnRandomCounter > _spawnRandomOffset)
         {
             SpawnAnEnemy();
-            spawnRandomCounter = 0;
+            _spawnRandomCounter = 0;
         }
     }
 
@@ -67,7 +69,7 @@ public class EnemyManager : MonoBehaviour
 
     System.Collections.IEnumerator IESpawnEnemy()
     {
-        yield return new WaitForSeconds(UnityEngine.Random.Range(0, 2));
+        yield return new WaitForSeconds(UnityEngine.Random.Range(0f, 2f));
 
         var spawnArea = GetArea();
 
@@ -92,10 +94,21 @@ public class EnemyManager : MonoBehaviour
         KillEnemyNumber++;
         CurrentEnemyNumber--;
 
-        if(CurrentEnemyNumber > 0 || KillEnemyNumber < _currentTotalEnemy)
-            EnemyDeadHandler?.Invoke(KillEnemyNumber);
-        else
+        Debug.Log("KillEnemyNumber " + KillEnemyNumber);
+        Debug.Log("_currentTotalEnemy " + _currentTotalEnemy);
+        if (KillEnemyNumber == _currentTotalEnemy)
+        {
             AllEnemyDeadHandler?.Invoke();
+        }
+        else
+        {
+            EnemyDeadHandler?.Invoke(KillEnemyNumber);
+
+            if (_spawnEnemies.Count >= _currentTotalEnemy && _startLevel)
+            {
+                SpawnAnEnemy();
+            }
+        }
     }
 
     private void EnemyAttackAct(int damage)

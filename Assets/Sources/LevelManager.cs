@@ -7,7 +7,7 @@ public class LevelManager : MonoBehaviour
 {
     private const int DEFAULT_LEVEL = 1;
     private const int INIT_ENEMY_NUM = 1;
-    private const int INIT_ENEMY_INCREASE = 3;
+    private const int INIT_ENEMY_INCREASE = 1;
 
 
     public int CurrentLevel { get; private set; } = DEFAULT_LEVEL;

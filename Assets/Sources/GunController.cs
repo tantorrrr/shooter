@@ -12,24 +12,25 @@ public class GunController : MonoBehaviour
     [SerializeField] private Animator _gunAnimController;
     [SerializeField] private Transform _emit;
 
-    
     public Action ShootStartHandler;
     public Action ShootEndHandler;
     public Action AutoReloadHandler;
+    public Action ReloadDoneHandler;
 
     private bool _continuousShoot = false;
     private float _delayCount = 0;
-    private int _currentAmmo;
     private GUN_STATE _currentGunState;
-
+    
+    public int GunCurrentAmmo { get; private set; }
     public int GunDamage { get; private set; } = GUN_DAMAGE;
+    public int GunMaxAmmo { get; private set; } = GUN_MAX_AMMO;
 
     private void Start()
     {
         Vector3 forward = -1f * _emit.right;
         SimplePool.Preload(_bullet.gameObject, 10);
         _currentGunState = GUN_STATE.NORMAL;
-        _currentAmmo = 0;
+        GunCurrentAmmo = 0;
     }
 
     public void ShootEnd()
@@ -37,6 +38,8 @@ public class GunController : MonoBehaviour
         _continuousShoot = false;
         ShootEndHandler?.Invoke();
         _delayCount = 0;
+
+        _gunAnimController.SetTrigger("releaseShoot");
     }
 
     public void ShootContinuous()
@@ -46,15 +49,20 @@ public class GunController : MonoBehaviour
 
     public void Shoot()
     {
-        if (_currentAmmo > GUN_MAX_AMMO || _currentGunState == GUN_STATE.RELOAD)
+        if(_currentGunState == GUN_STATE.RELOAD)
+        {
+            return;
+        }
+
+        if (GunCurrentAmmo > GunMaxAmmo)
         {
             Debug.LogError("out of ammo");
             AutoReloadHandler?.Invoke();
             return;
         }
 
-        //_gunAnimController.SetTrigger("shoot");
-        _gunAnimController.Play("gun_shot");
+        _gunAnimController.SetTrigger("shoot");
+        //_gunAnimController.Play("gun_shot");
         _continuousShoot = true;
 
         ShootStartHandler?.Invoke();
@@ -72,8 +80,10 @@ public class GunController : MonoBehaviour
     public void ReloadDone()
     {
         Debug.LogError("reload done");
-        _currentAmmo = 0;
+        GunCurrentAmmo = 0;
         _currentGunState = GUN_STATE.NORMAL;
+
+        ReloadDoneHandler?.Invoke();
     }
 
     void InitBullet()
@@ -83,7 +93,7 @@ public class GunController : MonoBehaviour
 
         cloneBullet.GetComponent<Bullet>().Reset();
         cloneBullet.GetComponent<Bullet>().AddForce(forceVec);
-        _currentAmmo++;
+        GunCurrentAmmo++;
     }
 
     void FixedUpdate()

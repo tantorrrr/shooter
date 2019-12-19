@@ -8,6 +8,7 @@ public class UIController : MonoBehaviour
 
     [SerializeField] private Text _round;
     [SerializeField] private Text _enemyStat;
+    [SerializeField] private Text _gunStat;
     [SerializeField] private FloatingJoystick _joystick;
     [SerializeField] private Image _crossHair;
     [SerializeField] private EndGame _endGame;
@@ -61,8 +62,13 @@ public class UIController : MonoBehaviour
         _round.text = $"Round {currentLevel}";
     }
 
-    public void ShowEnemy(int current,int total)
+    public void ShowEnemyStat(int current,int total)
     {
         _enemyStat.text = $"Enemy: {current}/{total}";
+    }
+
+    public void ShowGunStat(int current, int total)
+    {
+        _gunStat.text = $"Ammo: {total - current}/{total}";
     }
 }

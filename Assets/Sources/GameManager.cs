@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -34,7 +35,8 @@ public class GameManager : MonoBehaviour
 
         Gun.ShootStartHandler += OnGunShootStart;
         Gun.ShootEndHandler += OnGunShootEnd;
-        Gun.AutoReloadHandler += HandleReload;
+        Gun.AutoReloadHandler += OnReload;
+        Gun.ReloadDoneHandler += OnReloadDone;
 
         Player.PlayerDeadHandler += OnPlayerDead;
 
@@ -48,15 +50,16 @@ public class GameManager : MonoBehaviour
     private void StartInitLevel()
     {
         UIController.HideEndGame();
-
         UIController.ShowLevel(LevelManager.CurrentLevel);
-        UIController.ShowEnemy(0, LevelManager.TotalEnemyNumber);
+        UpdateEnemyStat();
+        UIController.ShowGunStat(Gun.GunCurrentAmmo, Gun.GunMaxAmmo);
+
         EnemyManager.StartNextLevel(LevelManager.InitEnemyNumber, LevelManager.TotalEnemyNumber);
     }
 
     private void OnClickReload()
     {
-        HandleReload();
+        OnReload();
     }
 
     private void OnShootBtnRelease()
@@ -82,17 +85,26 @@ public class GameManager : MonoBehaviour
 
     private void OnEnemyDead(int current)
     {
-        UIController.ShowEnemy(current, LevelManager.TotalEnemyNumber);
-
+        UpdateEnemyStat();
     }
     
 
     private void OnAllEnemyDead()
     {
-        UIController.ShowEndgme(true);
+        UpdateEnemyStat();
 
         LevelManager.NextLevel();
         EnemyManager.EndLevel();
+
+        _slowTimeEffect = true;
+
+        StartCoroutine(IEDelayShowEndgame());
+    }
+
+    IEnumerator IEDelayShowEndgame()
+    {
+        yield return new WaitForSeconds(2);
+        UIController.ShowEndgme(true);
     }
 
     public void NextLevel()
@@ -101,6 +113,12 @@ public class GameManager : MonoBehaviour
         UIController.HideEndGame();
 
         EnemyManager.StartNextLevel(LevelManager.InitEnemyNumber, LevelManager.TotalEnemyNumber);
+        UpdateEnemyStat();
+    }
+
+    private void UpdateEnemyStat()
+    {
+        UIController.ShowEnemyStat(EnemyManager.KillEnemyNumber, LevelManager.TotalEnemyNumber);
     }
 
     public void RestartGame()
@@ -109,6 +127,7 @@ public class GameManager : MonoBehaviour
         UIController.HideEndGame();
         Player.Reset();
         EnemyManager.Reset();
+        LevelManager.Reset();
 
         StartInitLevel();
     }
@@ -116,6 +135,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+#if DEBUG
         if (Input.GetKeyUp(KeyCode.Space))
         {
             //Fire();
@@ -126,26 +146,56 @@ public class GameManager : MonoBehaviour
         {
             //Fire();
 
-            HandleReload();
+            OnReload();
         }
+#endif
+        CheckSlow(Time.deltaTime);
     }
 
     private void OnGunShootStart()
     {
         Player.Shoot();
+
+        UIController.ShowGunStat(Gun.GunCurrentAmmo, Gun.GunMaxAmmo);
     }
-    void HandleShot()
+
+    private void HandleShot()
     {
         Gun.Shoot();
     }
-    void HandleReleaseShoot()
+    private void HandleReleaseShoot()
     {
         Gun.ShootEnd();
     }
-    void HandleReload()
+    private void OnReload()
     {
         Gun.Reload();
         Player.Reload();
+    }
+
+    private void OnReloadDone()
+    {
+        UIController.ShowGunStat(Gun.GunCurrentAmmo, Gun.GunMaxAmmo);
+    }
+
+    float _minSlowTimeScale = 0.3f;
+    float _slowTime = 1f;
+    float _countSlowTime = 0;
+    bool _slowTimeEffect = false;
+    private void CheckSlow(float deltaTime)
+    {
+        if (_slowTimeEffect)
+        {
+            _countSlowTime += deltaTime;
+            var lerpValue = Mathf.Lerp(_minSlowTimeScale, 1, _countSlowTime / _slowTime);
+            Time.timeScale = lerpValue * lerpValue;
+            if (_countSlowTime >= _slowTime)
+            {
+                _countSlowTime = 0;
+                Time.timeScale = 1;
+                _slowTimeEffect = false;
+            }
+        }
     }
 
     public enum PLAYER_STATE
@@ -154,5 +204,4 @@ public class GameManager : MonoBehaviour
         SHOT,
         RELOAD,
     }
-
 }

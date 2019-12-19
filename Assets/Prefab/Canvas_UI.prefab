@@ -1576,6 +1576,7 @@ MonoBehaviour:
   Offset: 0.5
   _round: {fileID: 929583510}
   _enemyStat: {fileID: 652203928}
+  _gunStat: {fileID: 546890366}
   _joystick: {fileID: 7738610262754804646}
   _crossHair: {fileID: 1875510230105428619}
   _endGame: {fileID: 1597888634}

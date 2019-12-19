@@ -121,28 +121,24 @@ public class EnemyController : MonoBehaviour
         _currentState = ENEMY_STATE.DIE;
         Head.gameObject.SetActive(false);
         Body.gameObject.SetActive(false);
+        EnemyDeadHandler?.Invoke();
 
         Dispose();
-    }
-
-    private void Reset()
-    {
-        _currentState = ENEMY_STATE.WALK;
-        Head.gameObject.SetActive(true);
-        Body.gameObject.SetActive(true);
     }
 
     private void Dispose()
     {
         Event.AttackHandler -= OnAttack;
+        
+
         StartCoroutine(IEDespawn());
     }
 
     IEnumerator IEDespawn()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(3);
 
-        EnemyDeadHandler?.Invoke();
+        //EnemyDeadHandler?.Invoke();
         SimplePool.Despawn(gameObject);
     }
 
@@ -152,17 +148,12 @@ public class EnemyController : MonoBehaviour
         return part.Rate * GameManager.Instance.Gun.GunDamage;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void Reset()
     {
-        Debug.Log("trigger" + other.name);
+        _currentState = ENEMY_STATE.WALK;
+        Head.gameObject.SetActive(true);
+        Body.gameObject.SetActive(true);
     }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log("colli sion");
-
-    }
-
 
     enum ENEMY_STATE
     {
