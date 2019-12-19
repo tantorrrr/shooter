@@ -5,10 +5,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    public LevelManager LevelManager;
     public UIController UIController;
     public GunController Gun;
     public PlayerController Player;
-    public EnemyManager EnemyManager; 
+    public EnemyManager EnemyManager;
 
     public PLAYER_STATE _currentState;
 
@@ -33,13 +34,24 @@ public class GameManager : MonoBehaviour
 
         Gun.ShootStartHandler += OnGunShootStart;
         Gun.ShootEndHandler += OnGunShootEnd;
+        Gun.AutoReloadHandler += HandleReload;
 
         Player.PlayerDeadHandler += OnPlayerDead;
 
-        EnemyManager.SetPlayer(Player);
+        EnemyManager.Init(Player);
+        EnemyManager.EnemyDeadHandler += OnEnemyDead;
+        EnemyManager.AllEnemyDeadHandler += OnAllEnemyDead;
 
+        StartInitLevel();
+    }
 
+    private void StartInitLevel()
+    {
         UIController.HideEndGame();
+
+        UIController.ShowLevel(LevelManager.CurrentLevel);
+        UIController.ShowEnemy(0, LevelManager.TotalEnemyNumber);
+        EnemyManager.StartNextLevel(LevelManager.InitEnemyNumber, LevelManager.TotalEnemyNumber);
     }
 
     private void OnClickReload()
@@ -67,25 +79,28 @@ public class GameManager : MonoBehaviour
         UIController.ShowEndgme(false);
     }
 
-    private void OnGunShootStart()
+
+    private void OnEnemyDead(int current)
     {
-        Player.Shoot();
+        UIController.ShowEnemy(current, LevelManager.TotalEnemyNumber);
+
+    }
+    
+
+    private void OnAllEnemyDead()
+    {
+        UIController.ShowEndgme(true);
+
+        LevelManager.NextLevel();
+        EnemyManager.EndLevel();
     }
 
-    void HandleShot()
+    public void NextLevel()
     {
-        Gun.Shoot();
-    }
+        UIController.ShowLevel(LevelManager.CurrentLevel);
+        UIController.HideEndGame();
 
-    void HandleReleaseShoot()
-    {
-        Gun.ShootEnd();
-    }
-
-    void HandleReload()
-    {
-        Gun.Reload();
-        Player.Reload();
+        EnemyManager.StartNextLevel(LevelManager.InitEnemyNumber, LevelManager.TotalEnemyNumber);
     }
 
     public void RestartGame()
@@ -93,6 +108,9 @@ public class GameManager : MonoBehaviour
         Debug.Log("Restart game");
         UIController.HideEndGame();
         Player.Reset();
+        EnemyManager.Reset();
+
+        StartInitLevel();
     }
 
     // Update is called once per frame
@@ -112,6 +130,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void OnGunShootStart()
+    {
+        Player.Shoot();
+    }
+    void HandleShot()
+    {
+        Gun.Shoot();
+    }
+    void HandleReleaseShoot()
+    {
+        Gun.ShootEnd();
+    }
+    void HandleReload()
+    {
+        Gun.Reload();
+        Player.Reload();
+    }
 
     public enum PLAYER_STATE
     {

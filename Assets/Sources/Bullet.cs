@@ -30,15 +30,11 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.LogError("collison " + collision.gameObject.name);
-        //Rig.isKinematic = true;
         SimplePool.Despawn(gameObject);
     }
 
     public void AddForce(Vector3 forceVec)
     {
         Rig.AddForce(forceVec);
-
-        Debug.Log("Go name " + gameObject.name);
     }
 }

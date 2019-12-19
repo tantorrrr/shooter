@@ -6,6 +6,8 @@ public class UIController : MonoBehaviour
 {
     public float Offset = 3;
 
+    [SerializeField] private Text _round;
+    [SerializeField] private Text _enemyStat;
     [SerializeField] private FloatingJoystick _joystick;
     [SerializeField] private Image _crossHair;
     [SerializeField] private EndGame _endGame;
@@ -52,5 +54,15 @@ public class UIController : MonoBehaviour
     public void HideEndGame()
     {
         _endGame.gameObject.SetActive(false);
+    }
+
+    public void ShowLevel(int currentLevel)
+    {
+        _round.text = $"Round {currentLevel}";
+    }
+
+    public void ShowEnemy(int current,int total)
+    {
+        _enemyStat.text = $"Enemy: {current}/{total}";
     }
 }

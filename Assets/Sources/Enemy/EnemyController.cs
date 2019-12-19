@@ -17,6 +17,7 @@ public class EnemyController : MonoBehaviour
     public NormalPart Body;
     public EnemyAnimEvent Event;
 
+    public Action EnemyDeadHandler;
     public Action<int> AttackHandler;
 
     private ENEMY_STATE _currentState;
@@ -140,6 +141,8 @@ public class EnemyController : MonoBehaviour
     IEnumerator IEDespawn()
     {
         yield return new WaitForSeconds(2);
+
+        EnemyDeadHandler?.Invoke();
         SimplePool.Despawn(gameObject);
     }
 
