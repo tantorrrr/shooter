@@ -1,6 +1,6 @@
 ﻿public class NormalPart : BodyPart
 {
-    public override float CrititalRate
+    public override float Rate
     {
         get
         {

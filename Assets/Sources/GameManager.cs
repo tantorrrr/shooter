@@ -3,13 +3,29 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+
     public UIController UIController;
     public GunController Gun;
     public PlayerController Player;
+    public EnemyManager EnemyManager; 
 
     public PLAYER_STATE _currentState;
 
-    void Awake()
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void Start()
     {
         UIController.ShootBtnPressHandler += OnShootBtnPress;
         UIController.ShootBtnReleaseHandler += OnShootBtnRelease;
@@ -17,6 +33,8 @@ public class GameManager : MonoBehaviour
 
         Gun.ShootStartHandler += OnGunShootStart;
         Gun.ShootEndHandler += OnGunShootEnd;
+
+        EnemyManager.SetPlayer(Player);
     }
 
     private void OnClickReload()

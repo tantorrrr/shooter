@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class BodyPart : MonoBehaviour
 {
-    public virtual float CrititalRate { get; }
+    public virtual float Rate { get; }
 
     public Action<BodyPart> GotHitHandler;
 

@@ -9,9 +9,22 @@ public class EnemyManager : MonoBehaviour
 
     public EnemyController Enemy;
 
+    private PlayerController _player;
+
+    public void SetPlayer(PlayerController player)
+    {
+        _player = player;
+    }
+
+    private void Start()
+    {
+        Invoke("SpawnEnemy", 1);
+        //SpawnEnemy();
+    }
+
     private void Update()
     {
-        Test();
+        //Test();
     }
 
     private float nextSpawn = 0;
@@ -30,12 +43,15 @@ public class EnemyManager : MonoBehaviour
 
     void SpawnEnemy()
     {
+        if (_player == null) return;
         var spawnArea = GetArea();
         Vector3 rndPosWithin;
-        rndPosWithin = new Vector3(Random.Range(-1f, 1f), EnemyYAxis, Random.Range(-1f, 1f));
+        rndPosWithin = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
         rndPosWithin = spawnArea.transform.TransformPoint(rndPosWithin * .5f);
-        //Instantiate(Enemy, rndPosWithin, transform.rotation);
-        SimplePool.Spawn(Enemy.gameObject, rndPosWithin, transform.rotation);
+        var enemy = SimplePool.Spawn(Enemy.gameObject, rndPosWithin, transform.rotation);
+
+        enemy.GetComponent<EnemyController>().Init();
+        enemy.GetComponent<EnemyController>().SetTarget(_player.transform);
     }
 
     GameObject GetArea()

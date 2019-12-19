@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class GunController : MonoBehaviour
 {
+    private const int GUN_DAMAGE = 5;
+
+    public int GunDamage { get; private set; } = GUN_DAMAGE;
+
     public Material mat;
     public float bulletSpeed = 100;
     public float DelayShoot = 0.2f;
