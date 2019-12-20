@@ -68,6 +68,10 @@ public class EnemyController : MonoBehaviour
     {
         Anim.SetTrigger("walkTo");
 
+        var walkID = UnityEngine.Random.Range(0, 2);
+        Debug.Log("walk " + walkID);
+        Anim.SetFloat("Blend",walkID);
+
         if (_target == null)
             _target = target;
 
