@@ -7,7 +7,7 @@ public class EnemyManager : MonoBehaviour
     private const int SPAWN_INTERVAL = 4;
 
     public List<GameObject> SpawnAreas;
-    public EnemyController Enemy;
+    public EnemyController[] Enemies;
 
     public int CurrentEnemyNumber { get; private set; }
     public int KillEnemyNumber { get; private set; }
@@ -79,7 +79,10 @@ public class EnemyManager : MonoBehaviour
         randomPos = spawnArea.transform.TransformPoint(randomPos * .5f);
         randomPos = new Vector3(randomPos.x, 0, randomPos.z);
 
-        var clone = SimplePool.Spawn(Enemy.gameObject, randomPos, transform.rotation);
+        var seed = UnityEngine.Random.Range(0, Enemies.Length);
+
+        if (seed >= Enemies.Length) yield break;
+        var clone = SimplePool.Spawn(Enemies[seed].gameObject, randomPos, transform.rotation);
 
         var enemy = clone.GetComponent<EnemyController>();
         enemy.Init();

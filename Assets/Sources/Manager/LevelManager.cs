@@ -6,7 +6,7 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     private const int DEFAULT_LEVEL = 1;
-    private const int INIT_ENEMY_NUM = 1;
+    private const int INIT_ENEMY_NUM = 5;
     private const int INIT_ENEMY_INCREASE = 1;
 
 

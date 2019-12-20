@@ -4914,6 +4914,92 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a4332ce04a73bf64c8dcb7c7ef139eea, type: 3}
+--- !u!1001 &2883143302078988328
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6351033870289786765, guid: c4400cbc682bc594697a2f74fd761d1e,
+        type: 3}
+      propertyPath: m_Name
+      value: EnemyWarCop
+      objectReference: {fileID: 0}
+    - target: {fileID: 6351033870289786765, guid: c4400cbc682bc594697a2f74fd761d1e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7448876136870260926, guid: c4400cbc682bc594697a2f74fd761d1e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 7448876136870260926, guid: c4400cbc682bc594697a2f74fd761d1e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7448876136870260926, guid: c4400cbc682bc594697a2f74fd761d1e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -9.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 7448876136870260926, guid: c4400cbc682bc594697a2f74fd761d1e,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7448876136870260926, guid: c4400cbc682bc594697a2f74fd761d1e,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7448876136870260926, guid: c4400cbc682bc594697a2f74fd761d1e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7448876136870260926, guid: c4400cbc682bc594697a2f74fd761d1e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7448876136870260926, guid: c4400cbc682bc594697a2f74fd761d1e,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 7448876136870260926, guid: c4400cbc682bc594697a2f74fd761d1e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7448876136870260926, guid: c4400cbc682bc594697a2f74fd761d1e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7448876136870260926, guid: c4400cbc682bc594697a2f74fd761d1e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c4400cbc682bc594697a2f74fd761d1e, type: 3}
+--- !u!114 &2883143302078988329 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3554605674293191199, guid: c4400cbc682bc594697a2f74fd761d1e,
+    type: 3}
+  m_PrefabInstance: {fileID: 2883143302078988328}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22d6b837b2dace24dbeb32eb981d68d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3142333062583574039 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2815533916458082570, guid: f2769d3eb4994104fb2605b4bc4ea065,
@@ -5003,9 +5089,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4076727950711846450, guid: 84008f8a4e095cc41a7cd6bf81102605,
         type: 3}
+      propertyPath: Enemies.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4076727950711846450, guid: 84008f8a4e095cc41a7cd6bf81102605,
+        type: 3}
       propertyPath: Enemy
       value: 
       objectReference: {fileID: 2815533914437812318}
+    - target: {fileID: 4076727950711846450, guid: 84008f8a4e095cc41a7cd6bf81102605,
+        type: 3}
+      propertyPath: Enemies.Array.data[0]
+      value: 
+      objectReference: {fileID: 2815533914437812318}
+    - target: {fileID: 4076727950711846450, guid: 84008f8a4e095cc41a7cd6bf81102605,
+        type: 3}
+      propertyPath: Enemies.Array.data[1]
+      value: 
+      objectReference: {fileID: 2883143302078988329}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84008f8a4e095cc41a7cd6bf81102605, type: 3}
 --- !u!114 &4670493721075204533 stripped
