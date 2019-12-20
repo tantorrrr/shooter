@@ -11,6 +11,8 @@ public class GunController : MonoBehaviour
     [SerializeField] private Bullet _bullet;
     [SerializeField] private Animator _gunAnimController;
     [SerializeField] private Transform _emit;
+    [SerializeField] private Transform _muzzelContainer;
+    [SerializeField] private GameObject _muzzelEffect;
 
     public Action ShootStartHandler;
     public Action ShootEndHandler;
@@ -66,6 +68,9 @@ public class GunController : MonoBehaviour
         _continuousShoot = true;
 
         ShootStartHandler?.Invoke();
+
+
+        var particle = SimplePool.Spawn(_muzzelEffect, _muzzelContainer.position, _muzzelContainer.rotation);
 
         InitBullet();
         SoundManager.Instance.Play(SoundManager.Instance.ShootClip);
