@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GunController : MonoBehaviour
@@ -12,7 +13,7 @@ public class GunController : MonoBehaviour
     [SerializeField] private Animator _gunAnimController;
     [SerializeField] private Transform _emit;
     [SerializeField] private Transform _muzzelContainer;
-    [SerializeField] private GameObject _muzzelEffect;
+    [SerializeField] private MuzzelParticle _muzzelEffect;
 
     public Action ShootStartHandler;
     public Action ShootEndHandler;
@@ -22,7 +23,7 @@ public class GunController : MonoBehaviour
     private bool _continuousShoot = false;
     private float _delayCount = 0;
     private GUN_STATE _currentGunState;
-    
+
     public int GunCurrentAmmo { get; private set; }
     public int GunDamage { get; private set; } = GUN_DAMAGE;
     public int GunMaxAmmo { get; private set; } = GUN_MAX_AMMO;
@@ -51,7 +52,7 @@ public class GunController : MonoBehaviour
 
     public void DoShoot()
     {
-        if(_currentGunState == GUN_STATE.RELOAD)
+        if (_currentGunState == GUN_STATE.RELOAD)
         {
             return;
         }
@@ -64,13 +65,12 @@ public class GunController : MonoBehaviour
         }
 
         _gunAnimController.SetTrigger("shoot");
-        //_gunAnimController.Play("gun_shot");
         _continuousShoot = true;
 
         ShootStartHandler?.Invoke();
 
-
-        var particle = SimplePool.Spawn(_muzzelEffect, _muzzelContainer.position, _muzzelContainer.rotation);
+        var particle = SimplePool.Spawn(_muzzelEffect.gameObject, _muzzelContainer.position, _muzzelContainer.rotation);
+        particle.GetComponent<MuzzelParticle>().Explode();
 
         InitBullet();
         SoundManager.Instance.Play(SoundManager.Instance.ShootClip);
@@ -88,9 +88,15 @@ public class GunController : MonoBehaviour
         Debug.LogError("reload done");
         GunCurrentAmmo = 0;
         _currentGunState = GUN_STATE.NORMAL;
-
+        CleanMuzzel();
         ReloadDoneHandler?.Invoke();
     }
+
+    private void CleanMuzzel()
+    {
+
+    }
+
 
     public void ReloadEvent()
     {
