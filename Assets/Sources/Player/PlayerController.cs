@@ -85,6 +85,8 @@ public class PlayerController : MonoBehaviour
 
         Debug.Log($"_currentHp {_currentHp}  damage {damage}");
         _currentHp -= damage;
+        if (_currentHp < 0)
+            _currentHp = 0;
 
         GetHitHandler?.Invoke(this);
 

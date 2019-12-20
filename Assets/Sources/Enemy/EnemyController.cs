@@ -135,6 +135,8 @@ public class EnemyController : MonoBehaviour
 
         var receiveDamage = (int)GetDamageReceive(part);
         _currentHp -= receiveDamage;
+        if (_currentHp < 0)
+            _currentHp = 0;
 
         GetHitHandler?.Invoke(this);
 

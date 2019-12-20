@@ -10,8 +10,8 @@ public class HealthBar : MonoBehaviour
     private const int BIG_FONT_SIZE = 80;
 
     [SerializeField] private Image _mainImg;
-    //[SerializeField] private Text _damageText;
-    
+    [SerializeField] private Text _stat;
+
     void Start()
     {
         Init();
@@ -30,30 +30,36 @@ public class HealthBar : MonoBehaviour
     private float _animTime = 0.5f;
     private float _delayTime = 0.1f;
 
-    private float _hp;
-    private float _current = 1f;
-    private float _target;
+    private float _maxHp;
+    private float _currentHp;
+    private float _targetFill;
+    private float _currentFill = 1f;
 
     public void Init(int hp)
     {
-        _hp = hp;
-        _current = 1f;
+        _maxHp = hp;
+        _currentHp = _maxHp;
+        _currentFill = 1f;
         _mainImg.fillAmount = 1;
+
+        _stat.text = $"{_currentHp}/{_maxHp}";
     }
 
     public void Reset()
     {
-        _current = 1;
+        _currentFill = 1;
         _mainImg.fillAmount = 1;
     }
 
     public void Update(float currentHp)
     {
-        _target = currentHp/_hp;
-        if (_target < 0)
-            _target = 0;
+        _currentHp = currentHp;
+        _targetFill = currentHp/_maxHp;
+        if (_targetFill < 0)
+            _targetFill = 0;
 
         _doAnim = true;
+        _stat.text = $"{_currentHp}/{_maxHp}";
     }
 
     float _countAnimTime = 0;
@@ -65,7 +71,7 @@ public class HealthBar : MonoBehaviour
             _countAnimTime += Time.deltaTime;
             var time = _countAnimTime / _animTime;
 
-            float lerpValue = Mathf.Lerp(_current, _target, time);
+            float lerpValue = Mathf.Lerp(_currentFill, _targetFill, time);
 
             _mainImg.fillAmount = lerpValue;
 
@@ -73,7 +79,7 @@ public class HealthBar : MonoBehaviour
             {
                 _countAnimTime = 0;
                 _doAnim = false;
-                _current = _target;
+                _currentFill = _targetFill;
             }
         }
     }
