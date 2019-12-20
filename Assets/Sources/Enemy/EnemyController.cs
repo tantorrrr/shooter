@@ -60,6 +60,7 @@ public class EnemyController : MonoBehaviour
     public void SetPlayerDead()
     {
         _currentState = ENEMY_STATE.IDLE;
+        Anim.SetTrigger("idle");
     }
 
     private void DoMoveToTarget()
@@ -107,6 +108,11 @@ public class EnemyController : MonoBehaviour
     private void OnGotHit(BodyPart part)
     {
         if (_currentState == ENEMY_STATE.DIE) return;
+
+        //if (Anim != null)
+        //{
+        //    Anim.SetLayerWeight(Anim.GetLayerIndex("Hit"), 1f);
+        //}
 
         var receiveDamage = (int)GetDamageReceive(part);
 
