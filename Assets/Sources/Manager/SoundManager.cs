@@ -17,6 +17,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip Reload;
     public AudioClip Win;
     public AudioClip Lost;
+    public AudioClip EnemyHit;
 
     private void Awake()
     {

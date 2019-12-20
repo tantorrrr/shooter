@@ -105,6 +105,7 @@ public class EnemyController : MonoBehaviour
             {
                 _anim.SetTrigger("attack");
                 _currentState = ENEMY_STATE.ATTACK;
+                SoundManager.Instance.Play(SoundManager.Instance.EnemyHit);
             }
         }
 
@@ -115,7 +116,8 @@ public class EnemyController : MonoBehaviour
             if(_countAttInterval >= AttackInterval)
             {
                 _anim.SetTrigger("attack");
-                _countAttInterval = 0;
+                _countAttInterval = 0; ;
+                SoundManager.Instance.Play(SoundManager.Instance.EnemyHit);
             }
         }
     }

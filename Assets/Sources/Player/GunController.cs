@@ -85,7 +85,6 @@ public class GunController : MonoBehaviour
 
     public void ReloadDone()
     {
-        Debug.LogError("reload done");
         GunCurrentAmmo = 0;
         _currentGunState = GUN_STATE.NORMAL;
         CleanMuzzel();

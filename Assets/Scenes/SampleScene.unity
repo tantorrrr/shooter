@@ -1861,6 +1861,11 @@ PrefabInstance:
       propertyPath: Lost
       value: 
       objectReference: {fileID: 8300000, guid: 873203229dc9c98428a5faeef6d0de68, type: 3}
+    - target: {fileID: 6054065808642892849, guid: 1e05815500614ca4b8c8b439b63dee93,
+        type: 3}
+      propertyPath: EnemyHit
+      value: 
+      objectReference: {fileID: 8300000, guid: eeb2ca72762a8df499ab4d3dee5f16a5, type: 3}
     - target: {fileID: 6054065808642892851, guid: 1e05815500614ca4b8c8b439b63dee93,
         type: 3}
       propertyPath: m_Name

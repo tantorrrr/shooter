@@ -99,8 +99,8 @@ public class EnemyManager : MonoBehaviour
         KillEnemyNumber++;
         CurrentEnemyNumber--;
 
-        Debug.Log("KillEnemyNumber " + KillEnemyNumber);
-        Debug.Log("_currentTotalEnemy " + _currentTotalEnemy);
+        //Debug.Log("KillEnemyNumber " + KillEnemyNumber);
+        //Debug.Log("_currentTotalEnemy " + _currentTotalEnemy);
         if (KillEnemyNumber == _currentTotalEnemy)
         {
             AllEnemyDeadHandler?.Invoke();

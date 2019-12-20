@@ -11,7 +11,6 @@ public class MuzzelParticle : MonoBehaviour
 
     private void Dispose()
     {
-        Debug.Log("despawn");
         SimplePool.Despawn(gameObject);
     }
 }

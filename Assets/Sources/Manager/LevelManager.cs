@@ -10,7 +10,6 @@ public class LevelManager : MonoBehaviour
     public int InitEnemy = 2;
     public int IncreaseEnemy = 3;
 
-
     public int CurrentLevel { get; private set; } = DEFAULT_LEVEL;
     public int TotalEnemyNumber { get; private set; }
     public int InitEnemyNumber { get; private set; }
@@ -34,5 +33,6 @@ public class LevelManager : MonoBehaviour
         TotalEnemyNumber = InitEnemy + IncreaseEnemy;
         InitEnemyNumber = InitEnemy;
         IncreaseEnemyNumber = IncreaseEnemy;
+        Debug.Log($"next level {InitEnemyNumber}|{IncreaseEnemyNumber}|{TotalEnemyNumber}|{CurrentLevel}");
     }
 }
