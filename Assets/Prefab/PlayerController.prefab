@@ -1798,6 +1798,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d31636c47b32e744cae99e6146981d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Gun: {fileID: 5002427555734981120}
   ArmAnimController: {fileID: 412270196696638932}
 --- !u!136 &1377726932
 CapsuleCollider:
@@ -1966,3 +1967,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 967689367939694526}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5002427555734981120 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5188671245406844350, guid: c14b62728af506449aafc1a0bed4fa2b,
+    type: 3}
+  m_PrefabInstance: {fileID: 967689367939694526}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 407ad7119c56de24ea8900a0448f4289, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

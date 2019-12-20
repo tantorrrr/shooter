@@ -5,15 +5,17 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     private float EXIST_TIME = 2f;
-    public Rigidbody Rig;
 
+    [SerializeField] private Rigidbody _rig;
+    [SerializeField] TrailRenderer _trailRender;
 
-    float _timer;
+    private float _timer;
     public void Reset()
     {
         _timer = 0;
-        Rig.velocity = Vector3.zero;
-        Rig.angularVelocity = Vector3.zero;
+        _rig.velocity = Vector3.zero;
+        _rig.angularVelocity = Vector3.zero;
+        _trailRender.Clear();
     }
 
     // Update is called once per frame
@@ -35,6 +37,6 @@ public class Bullet : MonoBehaviour
 
     public void AddForce(Vector3 forceVec)
     {
-        Rig.AddForce(forceVec);
+        _rig.AddForce(forceVec);
     }
 }

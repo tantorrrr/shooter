@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class GunController : MonoBehaviour
 {
-    private const int GUN_DAMAGE = 105;
+    private const int GUN_DAMAGE = 10;
     private const int GUN_MAX_AMMO = 30;
 
     [SerializeField] private float _bulletSpeed = 100;
-    [SerializeField] private float _delayShoot = 0.2f;
+    [SerializeField] private float _delayShoot = 0.3f;
     [SerializeField] private Bullet _bullet;
     [SerializeField] private Animator _gunAnimController;
     [SerializeField] private Transform _emit;
@@ -68,6 +68,7 @@ public class GunController : MonoBehaviour
         ShootStartHandler?.Invoke();
 
         InitBullet();
+        SoundManager.Instance.Play(SoundManager.Instance.ShootClip);
     }
 
     public void DoReload()
@@ -85,6 +86,12 @@ public class GunController : MonoBehaviour
 
         ReloadDoneHandler?.Invoke();
     }
+
+    public void ReloadEvent()
+    {
+        SoundManager.Instance.Play(SoundManager.Instance.Reload);
+    }
+
 
     void InitBullet()
     {

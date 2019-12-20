@@ -112,6 +112,13 @@ public class EnemyController : MonoBehaviour
         {
             Dead();
         }
+
+        if(part is HeadPart)
+        {
+            SoundManager.Instance.Play(SoundManager.Instance.ShootHitHead);
+        }
+
+        SoundManager.Instance.Play(SoundManager.Instance.ShootHitBody);
     }
 
     private void Dead()
@@ -120,6 +127,9 @@ public class EnemyController : MonoBehaviour
         _currentState = ENEMY_STATE.DIE;
         Head.gameObject.SetActive(false);
         Body.gameObject.SetActive(false);
+
+        SoundManager.Instance.Play(SoundManager.Instance.EnemyDead);
+
         EnemyDeadHandler?.Invoke();
 
         Dispose();

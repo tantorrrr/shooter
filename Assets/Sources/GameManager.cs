@@ -52,6 +52,10 @@ public class GameManager : MonoBehaviour
         UIController.ShowGunStat(Player.Gun.GunCurrentAmmo, Player.Gun.GunMaxAmmo);
 
         EnemyManager.StartNextLevel(LevelManager.InitEnemyNumber, LevelManager.TotalEnemyNumber);
+
+
+        Time.timeScale = 1;
+        SoundManager.Instance.PlayMusic();
     }
 
     private void OnClickReload()
@@ -72,6 +76,8 @@ public class GameManager : MonoBehaviour
     private void OnPlayerDead()
     {
         UIController.ShowEndgme(false);
+
+        Time.timeScale = 0;
     }
 
 

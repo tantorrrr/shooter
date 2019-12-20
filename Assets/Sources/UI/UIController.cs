@@ -50,6 +50,8 @@ public class UIController : MonoBehaviour
     {
         _endGame.gameObject.SetActive(true);
         _endGame.SetEndGame(isWin);
+
+        SoundManager.Instance.Play(isWin ? SoundManager.Instance.Win : SoundManager.Instance.Lost);
     }
 
     public void HideEndGame()
