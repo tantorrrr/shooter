@@ -13,6 +13,7 @@ public class EnemyManager : MonoBehaviour
     public int KillEnemyNumber { get; private set; }
     public Action<int> EnemyDeadHandler;
     public Action AllEnemyDeadHandler;
+    public Action<EnemyController> GetHitHandler;
 
     private PlayerController _player;
     private List<EnemyController> _spawnEnemies = new List<EnemyController>();
@@ -82,14 +83,16 @@ public class EnemyManager : MonoBehaviour
 
         var enemy = clone.GetComponent<EnemyController>();
         enemy.Init();
-        enemy.EnemyDeadHandler = AnEnemyDead;
-        enemy.AttackHandler = EnemyAttackAct;
         enemy.SetTarget(_player.transform);
+        enemy.EnemyDeadHandler = OnEnemyDead;
+        enemy.AttackHandler = OnEnemyAttackAct;
+        enemy.GetHitHandler = OnEnemyGetHit;
+
         _spawnEnemies.Add(enemy);
         CurrentEnemyNumber++;
     }
 
-    private void AnEnemyDead()
+    private void OnEnemyDead()
     {
         KillEnemyNumber++;
         CurrentEnemyNumber--;
@@ -111,9 +114,14 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
-    private void EnemyAttackAct(int damage)
+    private void OnEnemyAttackAct(int damage)
     {
         _player.BeAttacked(damage);
+    }
+
+    private void OnEnemyGetHit(EnemyController enemy)
+    {
+        GetHitHandler?.Invoke(enemy);
     }
 
     private GameObject GetArea()
@@ -140,6 +148,9 @@ public class EnemyManager : MonoBehaviour
 
     public void Reset()
     {
+        KillEnemyNumber = 0;
+        CurrentEnemyNumber = 0;
+
         for (int i = 0; i < _spawnEnemies.Count; i++)
         {
             if (_spawnEnemies[i] != null)

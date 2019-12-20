@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     private const int ENEMY_DAMAGE = 90;
-    private int MAX_HP = 100;
+    private const int MAX_HP = 100;
     private int ATTACK_DISTANCE = 2;
     private float ATTACK_INTERVAL_TIME = 4f;
 
@@ -18,12 +18,30 @@ public class EnemyController : MonoBehaviour
 
     public Action EnemyDeadHandler;
     public Action<int> AttackHandler;
+    public Action<EnemyController> GetHitHandler;
 
     private ENEMY_STATE _currentState;
     private Transform _target;
-    private int _currentHp;
 
     public int Damage { get; private set; } = ENEMY_DAMAGE;
+
+    private int _currentHp;
+    public int CurrentHp
+    {
+        get
+        {
+            return _currentHp;
+        }
+    }
+
+    private int _maxHp = MAX_HP;
+    public int MaxHp
+    {
+        get
+        {
+            return _maxHp;
+        }
+    }
 
     private void Awake()
     {
@@ -69,7 +87,6 @@ public class EnemyController : MonoBehaviour
         {
             float step = WalkSpeed * Time.deltaTime;
             transform.position = Vector3.MoveTowards(transform.position, _target.position, step);
-
         }
     }
 
@@ -109,17 +126,12 @@ public class EnemyController : MonoBehaviour
     {
         if (_currentState == ENEMY_STATE.DIE) return;
 
-        //if (Anim != null)
-        //{
-        //    Anim.SetLayerWeight(Anim.GetLayerIndex("Hit"), 1f);
-        //}
-
         var receiveDamage = (int)GetDamageReceive(part);
-
         _currentHp -= receiveDamage;
 
-        Debug.LogError($"got hit {receiveDamage}  hp: {_currentHp}");
-        if(_currentHp <= 0)
+        GetHitHandler?.Invoke(this);
+
+        if (_currentHp <= 0)
         {
             Dead();
         }

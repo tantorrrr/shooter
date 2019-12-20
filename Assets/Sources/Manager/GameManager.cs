@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
         EnemyManager.Init(Player);
         EnemyManager.EnemyDeadHandler += OnEnemyDead;
         EnemyManager.AllEnemyDeadHandler += OnAllEnemyDead;
+        EnemyManager.GetHitHandler += OnEnemyGetHit;
 
         UIController.ShootBtnPressHandler += OnShootBtnPress;
         UIController.ShootBtnReleaseHandler += OnShootBtnRelease;
@@ -95,6 +96,11 @@ public class GameManager : MonoBehaviour
         _slowTimeEffect = true;
 
         StartCoroutine(IEDelayShowEndgame());
+    }
+
+    private void OnEnemyGetHit(EnemyController enemy)
+    {
+        UIController.UpdateHealthbar(enemy);
     }
 
     IEnumerator IEDelayShowEndgame()

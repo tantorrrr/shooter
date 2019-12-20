@@ -12,6 +12,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private FloatingJoystick _joystick;
     [SerializeField] private Image _crossHair;
     [SerializeField] private EndGame _endGame;
+    [SerializeField] private HealthBar _healthBar;
 
     // Start is called before the first frame update
     private Vector3 direction;
@@ -72,5 +73,17 @@ public class UIController : MonoBehaviour
     public void ShowGunStat(int current, int total)
     {
         _gunStat.text = $"Ammo: {total - current}/{total}";
+    }
+
+    private EnemyController _currentShowEnemy;
+    public void UpdateHealthbar(EnemyController enemy)
+    {
+        if(_currentShowEnemy == null || _currentShowEnemy != enemy)
+        {
+            _healthBar.Init(enemy.MaxHp);
+            _currentShowEnemy = enemy;
+        }
+
+        _healthBar.Update(enemy.CurrentHp);
     }
 }
