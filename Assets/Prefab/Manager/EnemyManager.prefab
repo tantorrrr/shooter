@@ -137,10 +137,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a5017050e42da240b5ec2a49521a3a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnAreas:
+  _spawnAreas:
   - {fileID: 4076727950784850103}
   - {fileID: 4076727950652578237}
-  Enemy: {fileID: 0}
+  _enemies:
+  - {fileID: 2815533916458082571, guid: f2769d3eb4994104fb2605b4bc4ea065, type: 3}
+  - {fileID: 3554605674293191199, guid: c4400cbc682bc594697a2f74fd761d1e, type: 3}
 --- !u!1 &4076727950784850103
 GameObject:
   m_ObjectHideFlags: 0

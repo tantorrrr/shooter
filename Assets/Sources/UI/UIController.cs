@@ -12,7 +12,8 @@ public class UIController : MonoBehaviour
     [SerializeField] private FloatingJoystick _joystick;
     [SerializeField] private Image _crossHair;
     [SerializeField] private EndGame _endGame;
-    [SerializeField] private HealthBar _healthBar;
+    [SerializeField] private HealthBar _enemyHealthBar;
+    [SerializeField] private HealthBar _playerBar;
 
     // Start is called before the first frame update
     private Vector3 direction;
@@ -76,14 +77,22 @@ public class UIController : MonoBehaviour
     }
 
     private EnemyController _currentShowEnemy;
-    public void UpdateHealthbar(EnemyController enemy)
+    public void UpdateEnemyHealthbar(EnemyController enemy)
     {
         if(_currentShowEnemy == null || _currentShowEnemy != enemy)
         {
-            _healthBar.Init(enemy.MaxHp);
+            _enemyHealthBar.Init(enemy.MaxHp);
             _currentShowEnemy = enemy;
         }
 
-        _healthBar.Update(enemy.CurrentHp);
+        _enemyHealthBar.Update(enemy.CurrentHp);
+    }
+
+    public void UpdatePlayerHealthbar(PlayerController player,bool isInit = false)
+    {
+        if (isInit)
+            _playerBar.Init(player.MaxHp);
+
+        _playerBar.Update(player.CurrentHp);
     }
 }

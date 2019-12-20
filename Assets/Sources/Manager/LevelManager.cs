@@ -11,7 +11,7 @@ public class LevelManager : MonoBehaviour
 
 
     public int CurrentLevel { get; private set; } = DEFAULT_LEVEL;
-    public int TotalEnemyNumber { get; private set; } = INIT_ENEMY_INCREASE;
+    public int TotalEnemyNumber { get; private set; } = INIT_ENEMY_NUM + INIT_ENEMY_INCREASE;
     public int InitEnemyNumber { get; private set; } = INIT_ENEMY_NUM;
     public int IncreaseEnemyNumber { get; private set; } = INIT_ENEMY_INCREASE;
 
@@ -29,7 +29,7 @@ public class LevelManager : MonoBehaviour
     public void Reset()
     {
         CurrentLevel = DEFAULT_LEVEL;
-        TotalEnemyNumber = INIT_ENEMY_INCREASE;
+        TotalEnemyNumber = INIT_ENEMY_NUM + INIT_ENEMY_INCREASE;
         InitEnemyNumber = INIT_ENEMY_NUM;
     }
 }

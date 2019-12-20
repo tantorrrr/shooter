@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
         Player.Gun.ShootStartHandler += OnGunShootStart;
         Player.Gun.ReloadDoneHandler += OnReloadDone;
         Player.PlayerDeadHandler += OnPlayerDead;
+        Player.GetHitHandler += OnPlayerGetHit;
 
         EnemyManager.Init(Player);
         EnemyManager.EnemyDeadHandler += OnEnemyDead;
@@ -49,9 +50,10 @@ public class GameManager : MonoBehaviour
         UIController.ShowLevel(LevelManager.CurrentLevel);
         UpdateEnemyStat();
         UIController.ShowGunStat(Player.Gun.GunCurrentAmmo, Player.Gun.GunMaxAmmo);
+        UIController.UpdatePlayerHealthbar(Player, true);
 
         EnemyManager.StartNextLevel(LevelManager.InitEnemyNumber, LevelManager.TotalEnemyNumber);
-        
+
         SoundManager.Instance.PlayMusic();
     }
 
@@ -79,6 +81,10 @@ public class GameManager : MonoBehaviour
         EnemyManager.PlayerDead();
     }
 
+    private void OnPlayerGetHit(PlayerController player)
+    {
+        UIController.UpdatePlayerHealthbar(player);
+    }
 
     private void OnEnemyDead(int current)
     {
@@ -100,7 +106,7 @@ public class GameManager : MonoBehaviour
 
     private void OnEnemyGetHit(EnemyController enemy)
     {
-        UIController.UpdateHealthbar(enemy);
+        UIController.UpdateEnemyHealthbar(enemy);
     }
 
     IEnumerator IEDelayShowEndgame()

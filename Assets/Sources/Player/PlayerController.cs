@@ -3,19 +3,39 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private int MAX_HP = 1;
+    public int MAX_HP = 199;
+
+    [SerializeField] private Animator _anim;
+
+    public GunController Gun;
+    public Action PlayerDeadHandler;
+    public Action<PlayerController> GetHitHandler;
 
     private int _currentHp;
-    public GunController Gun;
+    public int CurrentHp
+    {
+        get
+        {
+            return _currentHp;
+        }
+    }
 
-    public Animator ArmAnimController;
-    public Action PlayerDeadHandler;
+    private int _maxHp;
+    public int MaxHp
+    {
+        get
+        {
+            return _maxHp;
+        }
+    }
 
     public void Init()
     {
         Gun.ShootStartHandler += OnGunShootStart;
         Gun.AutoReloadHandler += OnReload;
-        _currentHp = MAX_HP;
+
+        _maxHp = MAX_HP;
+        _currentHp = MaxHp;
     }
 
     private void OnGunShootStart()
@@ -50,20 +70,23 @@ public class PlayerController : MonoBehaviour
     private void DoShoot()
     {
         if (IsDead()) return;
-        ArmAnimController.SetTrigger("shoot");
+        _anim.SetTrigger("shoot");
     }
 
     public void DoReload()
     {
         if (IsDead()) return;
-        ArmAnimController.SetTrigger("reload");
+        _anim.SetTrigger("reload");
     }
 
     public void BeAttacked(int damage)
     {
         if (IsDead()) return;
 
+        Debug.Log($"_currentHp {_currentHp}  damage {damage}");
         _currentHp -= damage;
+
+        GetHitHandler?.Invoke(this);
 
         if (_currentHp <= 0)
             PlayerDeadHandler?.Invoke();
@@ -71,12 +94,11 @@ public class PlayerController : MonoBehaviour
 
     public bool IsDead()
     {
-        Debug.Log("_currentHp " + _currentHp);
         return _currentHp <= 0;
     }
 
     public void Reset()
     {
-        _currentHp = MAX_HP;
+        _currentHp = _maxHp;
     }
 }

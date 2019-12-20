@@ -66,7 +66,6 @@ public class HealthBar : MonoBehaviour
             var time = _countAnimTime / _animTime;
 
             float lerpValue = Mathf.Lerp(_current, _target, time);
-            Debug.Log($" _current {_current} _tartget {_target} _lerp {lerpValue}");
 
             _mainImg.fillAmount = lerpValue;
 
@@ -75,7 +74,6 @@ public class HealthBar : MonoBehaviour
                 _countAnimTime = 0;
                 _doAnim = false;
                 _current = _target;
-                //_damageText.text = string.Empty;
             }
         }
     }

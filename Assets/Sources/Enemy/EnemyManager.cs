@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    private const int SPAWN_INTERVAL = 4;
+    public int SpawnIntervalTime = 4;
 
-    public List<GameObject> SpawnAreas;
-    public EnemyController[] Enemies;
+    [SerializeField] private List<GameObject> _spawnAreas;
+    [SerializeField] private EnemyController[] _enemies;
 
     public int CurrentEnemyNumber { get; private set; }
     public int KillEnemyNumber { get; private set; }
@@ -44,7 +44,6 @@ public class EnemyManager : MonoBehaviour
     }
 
     float _spawnRandomCounter = 0;
-    float _spawnRandomOffset = SPAWN_INTERVAL;
     private void RandomSpawn()
     {
         if (!_startLevel) return;
@@ -55,7 +54,7 @@ public class EnemyManager : MonoBehaviour
         }
 
         _spawnRandomCounter += Time.deltaTime;
-        if (_spawnRandomCounter > _spawnRandomOffset)
+        if (_spawnRandomCounter > SpawnIntervalTime)
         {
             SpawnAnEnemy();
             _spawnRandomCounter = 0;
@@ -79,10 +78,10 @@ public class EnemyManager : MonoBehaviour
         randomPos = spawnArea.transform.TransformPoint(randomPos * .5f);
         randomPos = new Vector3(randomPos.x, 0, randomPos.z);
 
-        var seed = UnityEngine.Random.Range(0, Enemies.Length);
+        var seed = UnityEngine.Random.Range(0, _enemies.Length);
 
-        if (seed >= Enemies.Length) yield break;
-        var clone = SimplePool.Spawn(Enemies[seed].gameObject, randomPos, transform.rotation);
+        if (seed >= _enemies.Length) yield break;
+        var clone = SimplePool.Spawn(_enemies[seed].gameObject, randomPos, transform.rotation);
 
         var enemy = clone.GetComponent<EnemyController>();
         enemy.Init();
@@ -129,8 +128,8 @@ public class EnemyManager : MonoBehaviour
 
     private GameObject GetArea()
     {
-        var seed = UnityEngine.Random.Range(0, SpawnAreas.Count);
-        return SpawnAreas[seed];
+        var seed = UnityEngine.Random.Range(0, _spawnAreas.Count);
+        return _spawnAreas[seed];
     }
 
     public void PlayerDead()

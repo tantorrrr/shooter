@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    private const int ENEMY_DAMAGE = 90;
-    private const int MAX_HP = 100;
-    private int ATTACK_DISTANCE = 2;
-    private float ATTACK_INTERVAL_TIME = 4f;
+    private const int ATTACK_DISTANCE = 2;
 
+    public int EnemyDamage = 90;
+    public int EnemyMaxHP = 100;
+    public float AttackInterval = 4f;
     public float WalkSpeed = 20;
 
-    public Animator Anim;
-    public HeadPart Head;
-    public NormalPart Body;
-    public EnemyAnimEvent Event;
+    [SerializeField] private Animator _anim;
+    [SerializeField] private HeadPart _head;
+    [SerializeField] private NormalPart _body;
+    [SerializeField] private EnemyAnimEvent _animEvent;
 
     public Action EnemyDeadHandler;
     public Action<int> AttackHandler;
@@ -22,8 +22,8 @@ public class EnemyController : MonoBehaviour
 
     private ENEMY_STATE _currentState;
     private Transform _target;
-
-    public int Damage { get; private set; } = ENEMY_DAMAGE;
+  
+    public int Damage { get; private set; }
 
     private int _currentHp;
     public int CurrentHp
@@ -34,7 +34,8 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private int _maxHp = MAX_HP;
+
+    private int _maxHp;
     public int MaxHp
     {
         get
@@ -45,18 +46,20 @@ public class EnemyController : MonoBehaviour
 
     private void Awake()
     {
-        Head.GotHitHandler += OnGotHit;
-        Body.GotHitHandler += OnGotHit;
+        Damage = EnemyDamage;
+        _maxHp = EnemyMaxHP;
+        _head.GotHitHandler += OnGotHit;
+        _body.GotHitHandler += OnGotHit;
     }
 
     public void Init()
     {
         Reset();
-        _currentHp = MAX_HP;
-        Anim.Play("idle");
+        _currentHp = EnemyMaxHP;
+        _anim.Play("idle");
         _currentState = ENEMY_STATE.WALK;
 
-        Event.AttackHandler += OnAttack;
+        _animEvent.AttackHandler += OnAttack;
     }
 
     private void OnAttack()
@@ -66,11 +69,11 @@ public class EnemyController : MonoBehaviour
 
     public void SetTarget(Transform target)
     {
-        Anim.SetTrigger("walkTo");
+        _anim.SetTrigger("walkTo");
 
         var walkID = UnityEngine.Random.Range(0, 2);
         Debug.Log("walk " + walkID);
-        Anim.SetFloat("Blend",walkID);
+        _anim.SetFloat("Blend",walkID);
 
         if (_target == null)
             _target = target;
@@ -82,7 +85,7 @@ public class EnemyController : MonoBehaviour
     public void SetPlayerDead()
     {
         _currentState = ENEMY_STATE.IDLE;
-        Anim.SetTrigger("idle");
+        _anim.SetTrigger("idle");
     }
 
     private void DoMoveToTarget()
@@ -101,7 +104,7 @@ public class EnemyController : MonoBehaviour
         {
             if(Vector3.Distance(transform.position, _target.position) <= ATTACK_DISTANCE)
             {
-                Anim.SetTrigger("attack");
+                _anim.SetTrigger("attack");
                 _currentState = ENEMY_STATE.ATTACK;
             }
         }
@@ -110,9 +113,9 @@ public class EnemyController : MonoBehaviour
         {
             _countAttInterval += Time.deltaTime;
 
-            if(_countAttInterval >= ATTACK_INTERVAL_TIME)
+            if(_countAttInterval >= AttackInterval)
             {
-                Anim.SetTrigger("attack");
+                _anim.SetTrigger("attack");
                 _countAttInterval = 0;
             }
         }
@@ -150,10 +153,10 @@ public class EnemyController : MonoBehaviour
 
     private void Dead()
     {
-        Anim.SetTrigger("dead");
+        _anim.SetTrigger("dead");
         _currentState = ENEMY_STATE.DIE;
-        Head.gameObject.SetActive(false);
-        Body.gameObject.SetActive(false);
+        _head.gameObject.SetActive(false);
+        _body.gameObject.SetActive(false);
 
         SoundManager.Instance.Play(SoundManager.Instance.EnemyDead);
 
@@ -164,7 +167,7 @@ public class EnemyController : MonoBehaviour
 
     private void Dispose()
     {
-        Event.AttackHandler -= OnAttack;
+        _animEvent.AttackHandler -= OnAttack;
         
 
         StartCoroutine(IEDespawn());
@@ -185,8 +188,8 @@ public class EnemyController : MonoBehaviour
     private void Reset()
     {
         _currentState = ENEMY_STATE.WALK;
-        Head.gameObject.SetActive(true);
-        Body.gameObject.SetActive(true);
+        _head.gameObject.SetActive(true);
+        _body.gameObject.SetActive(true);
     }
 
     enum ENEMY_STATE
