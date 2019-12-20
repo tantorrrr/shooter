@@ -57,6 +57,11 @@ public class EnemyController : MonoBehaviour
         _currentState = ENEMY_STATE.WALK;
     }
 
+    public void SetPlayerDead()
+    {
+        _currentState = ENEMY_STATE.IDLE;
+    }
+
     private void DoMoveToTarget()
     {
         if(_currentState == ENEMY_STATE.WALK && _target != null)
@@ -164,6 +169,7 @@ public class EnemyController : MonoBehaviour
 
     enum ENEMY_STATE
     {
+        IDLE,
         WALK,
         ATTACK,
         GOT_HIT,

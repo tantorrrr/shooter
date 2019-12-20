@@ -122,6 +122,17 @@ public class EnemyManager : MonoBehaviour
         return SpawnAreas[seed];
     }
 
+    public void PlayerDead()
+    {
+        for (int i = 0; i < _spawnEnemies.Count; i++)
+        {
+            if (_spawnEnemies[i] != null)
+            {
+                _spawnEnemies[i].SetPlayerDead();
+            }
+        }
+    }
+
     public void EndLevel()
     {
         _spawnEnemies.Clear();

@@ -11,8 +11,6 @@ public class GameManager : MonoBehaviour
     public PlayerController Player;
     public EnemyManager EnemyManager;
 
-    public PLAYER_STATE _currentState;
-
     private void Awake()
     {
         if (Instance == null)
@@ -52,9 +50,7 @@ public class GameManager : MonoBehaviour
         UIController.ShowGunStat(Player.Gun.GunCurrentAmmo, Player.Gun.GunMaxAmmo);
 
         EnemyManager.StartNextLevel(LevelManager.InitEnemyNumber, LevelManager.TotalEnemyNumber);
-
-
-        Time.timeScale = 1;
+        
         SoundManager.Instance.PlayMusic();
     }
 
@@ -70,14 +66,16 @@ public class GameManager : MonoBehaviour
 
     private void OnShootBtnPress()
     {
-        HandleShot();
+        HandleShoot();
     }
 
     private void OnPlayerDead()
     {
         UIController.ShowEndgme(false);
 
-        Time.timeScale = 0;
+        _slowTimeEffect = true;
+
+        EnemyManager.PlayerDead();
     }
 
 
@@ -138,7 +136,7 @@ public class GameManager : MonoBehaviour
         {
             //Fire();
 
-            HandleShot();
+            HandleShoot();
         }
         if (Input.GetKeyUp(KeyCode.R))
         {
@@ -155,13 +153,14 @@ public class GameManager : MonoBehaviour
         UIController.ShowGunStat(Player.Gun.GunCurrentAmmo, Player.Gun.GunMaxAmmo);
     }
 
-    private void HandleShot()
+    private void HandleShoot()
     {
-        Player.Gun.DoShoot();
+        Player.HandleShoot();
     }
+
     private void HandleReleaseShoot()
     {
-        Player.Gun.ShootEnd();
+        Player.HandleReleaseShoot();
     }
 
     private void OnReloadDone()
@@ -187,12 +186,5 @@ public class GameManager : MonoBehaviour
                 _slowTimeEffect = false;
             }
         }
-    }
-
-    public enum PLAYER_STATE
-    {
-        IDLE,
-        SHOT,
-        RELOAD,
     }
 }
