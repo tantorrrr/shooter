@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22d6b837b2dace24dbeb32eb981d68d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyDamage: 90
+  EnemyDamage: 30
   EnemyMaxHP: 80
   AttackInterval: 4
   WalkSpeed: 0.8

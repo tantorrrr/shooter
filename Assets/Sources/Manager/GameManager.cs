@@ -45,15 +45,16 @@ public class GameManager : MonoBehaviour
     }
 
     private void StartInitLevel()
-    {
+    { 
+        LevelManager.Reset();
+        UpdateEnemyStat();
+
         UIController.HideEndGame();
         UIController.ShowLevel(LevelManager.CurrentLevel);
-        UpdateEnemyStat();
         UIController.ShowGunStat(Player.Gun.GunCurrentAmmo, Player.Gun.GunMaxAmmo);
         UIController.UpdatePlayerHealthbar(Player, true);
 
         EnemyManager.StartNextLevel(LevelManager.InitEnemyNumber, LevelManager.TotalEnemyNumber);
-
         SoundManager.Instance.PlayMusic();
     }
 

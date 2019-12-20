@@ -59,6 +59,7 @@ public class UIController : MonoBehaviour
     public void HideEndGame()
     {
         _endGame.gameObject.SetActive(false);
+        _enemyHealthBar.gameObject.SetActive(false);
     }
 
     public void ShowLevel(int currentLevel)
@@ -85,6 +86,8 @@ public class UIController : MonoBehaviour
             _currentShowEnemy = enemy;
         }
 
+        if (!_enemyHealthBar.gameObject.activeSelf)
+            _enemyHealthBar.gameObject.SetActive(true);
         _enemyHealthBar.Update(enemy.CurrentHp);
     }
 

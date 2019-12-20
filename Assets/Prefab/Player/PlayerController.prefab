@@ -2230,7 +2230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bulletSpeed: 5000
-  _delayShoot: 0.2
+  _delayShoot: 0.1
   _bullet: {fileID: 858347188031003605, guid: 442e5d6503c52c44daff4343e2d062f4, type: 3}
   _gunAnimController: {fileID: 5002427557116297552}
   _emit: {fileID: 5002427557109051058}
@@ -2617,7 +2617,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7306033353321064169}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2638,7 +2638,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d31636c47b32e744cae99e6146981d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MAX_HP: 199
+  MAX_HP: 100
   _anim: {fileID: 412270196696638932}
   Gun: {fileID: 5002427555734981120}
 --- !u!136 &1377726932
